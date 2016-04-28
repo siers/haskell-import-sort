@@ -1,0 +1,27 @@
+- haskell-import-sort
+    I use vim. I use haskell. I sort imports.
+    ∴ I use vim to sort haskell imports.
+
+- how?
+    Well, through .vimrc I map the keybind \v:
+        map <Leader>v vip!hs-import-sort<CR>:w<CR>
+
+    through paramap, I concat paragraphs of text with null-bytes; demo here:
+        https://gist.github.com/siers/01306a361c22f2de0122
+
+    then in hs-import-sort I duplicate lines and disband them with newlines,
+    which go through sed again, then get sorted.
+    This makes `sort' ignore the "qualified" keyword. Yay.
+
+- example
+    $ cabal install process-extras string
+    $ ghc paramap
+
+    $ hs-import-sort <<< "
+    import Data.List (intersperse, find)
+    import Control.Monad.IO.Class
+    import qualified Data.ByteString.Lazy as BL
+    "
+    import Control.Monad.IO.Class
+    import qualified Data.ByteString.Lazy as BL
+    import Data.List (intersperse, find)
