@@ -1,0 +1,17 @@
+name:                haskell-import-sort
+version:             0.1.0.0
+description:         Lets you work on paragraph of text with the usual unix text manipulation programs
+author:              siers
+maintainer:          wimuan@gmail.com
+build-type:          Simple
+cabal-version:       >=1.20
+
+executable paramap
+  hs-source-dirs:     .
+  main-is:            paramap.hs
+  default-language:   Haskell2010
+  build-depends:      base
+                    , process-extras
+                    , unix
+                    , bytestring
+                    , split

@@ -1,0 +1,10 @@
+resolver: lts-5.13
+
+packages:
+- '.'
+
+flags: {}
+
+extra-package-dbs: []
+
+system-ghc: false
