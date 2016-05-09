@@ -2,8 +2,6 @@
 
 {- cabal install process-extras string -}
 
-import Prelude ()
-
 import Control.Applicative
 import Control.Monad
 import Data.Function
@@ -12,10 +10,8 @@ import Data.List
 import Data.List.Split
 import Data.Maybe
 import qualified Data.ByteString as B
-import qualified Data.ByteString.Char8 as BC
 import System.Environment
 import System.Process.ByteString
-import GHC.Base
 
 snd3 (_,b,_) = b
 
@@ -26,24 +22,18 @@ strip = rs . rs
 
 respace from to = B.intercalate to . bsplitOn from
 
-process :: [String] -> B.ByteString -> IO B.ByteString
-process (a:as) input = readProcessWithExitCode a as input >>= return . snd3
-
 nullify :: B.ByteString -> B.ByteString
 nullify = respace "\n" "\0"
 
 denullify :: B.ByteString -> B.ByteString
 denullify = respace "\0" "\n"
 
-unpara :: [String] -> (B.ByteString -> B.ByteString) -> B.ByteString -> IO B.ByteString
-unpara mapArgs pre = fmap smash . mapM (process mapArgs . pre) . bsplitOn "\n\n"
-    where smash = B.intercalate "\n" . map nullify
-
+unpara pre = B.intercalate "\n" . map (nullify . pre) . bsplitOn "\n\n"
 para = B.intercalate "\n\n" . map denullify . bsplitOn "\n"
 
-main = do
-    args <- getArgs
+process :: B.ByteString -> IO B.ByteString
+process input = getArgs >>= (\as -> readProcessWithExitCode
+    (head as) (tail as) input) >>= return . snd3
 
-    let [mapArgs:processArgs:_] = splitWhen (== "--") args
-
-    B.getContents >>= unpara ["cat"] strip
+main = B.putStr . eoln . para . strip =<< process . eoln . unpara strip =<< B.getContents
+    where eoln = flip B.append "\n"
