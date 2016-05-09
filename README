@@ -17,11 +17,20 @@
     $ cabal install process-extras string
     $ ghc paramap
 
+    $ # This is from Yesod/Auth/OpenId.hs.
     $ hs-import-sort <<< "
-    import Data.List (intersperse, find)
-    import Control.Monad.IO.Class
-    import qualified Data.ByteString.Lazy as BL
+    import Yesod.Form
+    import Yesod.Core
+    import Data.Text (Text, isPrefixOf)
+    import qualified Yesod.Auth.Message as Msg
+    import Control.Exception.Lifted (SomeException, try)
+    import Data.Maybe (fromMaybe)
+    import qualified Data.Text as T
     "
-    import Control.Monad.IO.Class
-    import qualified Data.ByteString.Lazy as BL
-    import Data.List (intersperse, find)
+    import Control.Exception.Lifted (SomeException, try)
+    import Data.Maybe (fromMaybe)
+    import qualified Data.Text as T
+    import Data.Text (Text, isPrefixOf)
+    import qualified Yesod.Auth.Message as Msg
+    import Yesod.Core
+    import Yesod.Form
