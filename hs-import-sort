@@ -1,4 +1,3 @@
 #!/bin/sh
 
-# Without "grep .", the ending newline isn't present, but it works for now.
-sed 'p;G' | paramap sh -c 'sed "s/qualified //" | sort | sed "s/^[^\x0]*\x0//"' | grep . | uniq
+sed 'p;G' | paramap sh -c 'sed "s/qualified //" | sort | sed "s/^[^\x0]*\x0//"' | uniq
